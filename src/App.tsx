@@ -1,9 +1,9 @@
-import TodoList from "./components/TodoList";
+import TaskContextProvider from "./context/TaskContext";
 
 function App() {
   return (
     <>
-      <TodoList />
+      <TaskContextProvider />
     </>
   );
 }

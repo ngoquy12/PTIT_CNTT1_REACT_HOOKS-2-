@@ -1,4 +1,15 @@
+import { useReducer } from "react";
+import { taskReducer } from "../reducers/taskReducer";
+
 export default function TaskItem() {
+  const [_, dispatch] = useReducer(taskReducer, []);
+
+  const handleDelete = (id: number | string) => {
+    dispatch({
+      type: "DELETE_TASK",
+      payload: { id: id },
+    });
+  };
   return (
     <>
       <li className="list-group-item d-flex justify-content-between align-items-center">
@@ -8,7 +19,11 @@ export default function TaskItem() {
         </div>
         <div>
           <i className="fas fa-edit text-primary me-3" role="button" />
-          <i className="fas fa-trash text-danger" role="button" />
+          <i
+            onClick={() => handleDelete(1)}
+            className="fas fa-trash text-danger"
+            role="button"
+          />
         </div>
       </li>
     </>

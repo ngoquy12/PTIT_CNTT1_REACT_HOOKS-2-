@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import { createContext, useReducer } from "react";
 import TodoList from "../components/TodoList";
 import type { Task } from "../interfaces/task.interface";
+import { taskReducer } from "../reducers/taskReducer";
 
 interface TaskContextType {
   tasks?: Task[];
@@ -11,10 +12,13 @@ interface TaskContextType {
 }
 
 // Bước 1: Tạo context
-const TaskContext = React.createContext<TaskContextType | undefined>(undefined);
+export const TaskContext = createContext<TaskContextType | undefined>(
+  undefined
+);
 
 export default function TaskContextProvider() {
-  const [tasks] = useState<Task[]>([]);
+  const [tasks, dispatch] = useReducer(taskReducer, []);
+
   return (
     <TaskContext.Provider value={{ tasks }}>
       <TodoList />

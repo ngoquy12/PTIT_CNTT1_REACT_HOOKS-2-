@@ -13,5 +13,29 @@ type Action =
   | { type: "TOGGLE_TASK"; payload: { id: number | string } };
 
 export const taskReducer = (state: Task[], action: Action): Task[] => {
-  return [];
+  switch (action.type) {
+    // Tại sao mặc dù đã clone ra một mảng mới, mà vẫn bị bất đồng bộ
+    case "ADD_TASK":
+      return [...state, action.payload];
+
+    case "DELETE_TASK":
+      return state.filter((task: Task) => task.id !== action.payload.id);
+
+    case "TOGGLE_TASK":
+      return state.map((task: Task) =>
+        task.id === action.payload.id
+          ? { ...task, isCompleted: !task.isCompleted }
+          : task
+      );
+
+    case "UPDATE_TASK":
+      return state.map((task: Task) =>
+        task.id === action.payload.id
+          ? { ...task, name: action.payload.name }
+          : task
+      );
+
+    default:
+      return state;
+  }
 };
