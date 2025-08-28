@@ -1,10 +1,20 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import type { Task } from "../interfaces/task.interface";
 import { useTaskContext } from "../context/TaskContext";
 
 export default function TodoInput() {
   const [inputValue, setInputValue] = useState<string>("");
   const [isShowError, setIsShowError] = useState<boolean>(false);
+
+  // Tạo tham chiếu cho input
+  const inputRef = useRef<HTMLInputElement | null>(null);
+
+  useEffect(() => {
+    // Focus vào input khi ứng component được mount vào trong DOM
+    if (inputRef) {
+      inputRef.current?.focus();
+    }
+  }, []);
 
   // Lấy dữ liệu từ trong context
   const { handleAddTask } = useTaskContext();
@@ -50,6 +60,7 @@ export default function TodoInput() {
     <>
       <form onSubmit={handleSubmitForm} className="d-flex mb-1">
         <input
+          ref={inputRef}
           onChange={handleChangeInput}
           value={inputValue}
           type="text"

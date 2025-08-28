@@ -7,7 +7,7 @@ interface TaskContextType {
   handleUpdateTask?: (id: number | string, name: string) => void;
   handleDeleteTask?: (id: number | string) => void;
   handleToggleTask?: (id: number | string) => void;
-  handleCountTaskCompleted?: () => number;
+  handleCountTaskCompleted: number;
 }
 
 // Bước 1: Tạo context

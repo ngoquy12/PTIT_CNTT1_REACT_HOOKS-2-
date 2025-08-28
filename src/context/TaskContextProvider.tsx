@@ -1,4 +1,4 @@
-import { useEffect, useReducer } from "react";
+import { useCallback, useEffect, useMemo, useReducer } from "react";
 import { taskReducer } from "../reducers/taskReducer";
 import { TaskContext } from "./TaskContext";
 import TodoList from "../components/TodoList";
@@ -20,21 +20,21 @@ export default function TaskContextProvider() {
     localStorage.setItem("taskList", JSON.stringify(tasks));
   }, [tasks]);
 
-  const handleAddTask = (task: Task) => {
+  const handleAddTask = useCallback((task: Task) => {
     dispatch({
       type: "ADD_TASK",
       payload: task,
     });
-  };
+  }, []);
 
-  const handleToggleTask = (id: number | string) => {
+  const handleToggleTask = useCallback((id: number | string) => {
     dispatch({
       type: "TOGGLE_TASK",
       payload: { id },
     });
-  };
+  }, []);
 
-  const handleUpdateTask = (id: number | string, name: string) => {
+  const handleUpdateTask = useCallback((id: number | string, name: string) => {
     dispatch({
       type: "UPDATE_TASK",
       payload: {
@@ -42,20 +42,20 @@ export default function TaskContextProvider() {
         name,
       },
     });
-  };
+  }, []);
 
-  const handleDeleteTask = (id: number | string) => {
+  const handleDeleteTask = useCallback((id: number | string) => {
     dispatch({
       type: "DELETE_TASK",
       payload: { id },
     });
-  };
+  }, []);
 
-  const handleCountTaskCompleted = (): number => {
+  const handleCountTaskCompleted = useMemo((): number => {
     const taskCompleteds = tasks.filter((task: Task) => task.isCompleted);
 
     return taskCompleteds.length;
-  };
+  }, [tasks]);
 
   return (
     <TaskContext.Provider
