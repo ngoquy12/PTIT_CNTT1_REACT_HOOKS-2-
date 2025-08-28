@@ -1,4 +1,4 @@
-import TaskContextProvider from "./context/TaskContext";
+import TaskContextProvider from "./context/TaskContextProvider";
 
 function App() {
   return (

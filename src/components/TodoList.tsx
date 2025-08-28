@@ -1,3 +1,4 @@
+import { useTaskContext } from "../context/TaskContext";
 import TaskComplete from "./TaskComplete";
 import TaskEmpty from "./TaskEmpty";
 import TaskList from "./TaskList";
@@ -5,6 +6,7 @@ import TodoHeader from "./TodoHeader";
 import TodoInput from "./TodoInput";
 
 export default function TodoList() {
+  const { tasks } = useTaskContext();
   return (
     <>
       <div className="container todo-container">
@@ -20,8 +22,12 @@ export default function TodoList() {
         {/* Hiển thị công việc hoàn thành */}
         <TaskComplete />
 
-        {/* Hiển thị khi chưa có công việc */}
-        <TaskEmpty />
+        {tasks?.length === 0 && (
+          <>
+            {/* Hiển thị khi chưa có công việc */}
+            <TaskEmpty />
+          </>
+        )}
       </div>
     </>
   );

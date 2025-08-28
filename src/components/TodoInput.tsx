@@ -1,13 +1,13 @@
-import React, { useReducer, useState } from "react";
-import { taskReducer } from "../reducers/taskReducer";
+import React, { useState } from "react";
 import type { Task } from "../interfaces/task.interface";
+import { useTaskContext } from "../context/TaskContext";
 
 export default function TodoInput() {
   const [inputValue, setInputValue] = useState<string>("");
   const [isShowError, setIsShowError] = useState<boolean>(false);
 
-  // Gọi reducer
-  const [_, dispatch] = useReducer(taskReducer, []);
+  // Lấy dữ liệu từ trong context
+  const { handleAddTask } = useTaskContext();
 
   // Hàm lấy giá trị trong input
   const handleChangeInput = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -35,10 +35,10 @@ export default function TodoInput() {
         isCompleted: false,
       };
 
-      dispatch({
-        type: "ADD_TASK",
-        payload: newTask,
-      });
+      // Gọi hàm thêm công việc từ context
+      if (handleAddTask) {
+        handleAddTask(newTask);
+      }
 
       setInputValue("");
       setIsShowError(false);

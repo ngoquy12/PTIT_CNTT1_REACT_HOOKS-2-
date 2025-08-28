@@ -1,26 +1,45 @@
-import { useReducer } from "react";
-import { taskReducer } from "../reducers/taskReducer";
+import type { Task } from "../interfaces/task.interface";
+import { useTaskContext } from "../context/TaskContext";
 
-export default function TaskItem() {
-  const [_, dispatch] = useReducer(taskReducer, []);
+type PropTypes = {
+  task: Task;
+};
+
+export default function TaskItem({ task }: PropTypes) {
+  // Gọi hàm xóa trong context
+  const { handleDeleteTask, handleToggleTask } = useTaskContext();
 
   const handleDelete = (id: number | string) => {
-    dispatch({
-      type: "DELETE_TASK",
-      payload: { id: id },
-    });
+    if (handleDeleteTask) {
+      handleDeleteTask(id);
+    }
+  };
+
+  const handleChangeStatus = () => {
+    if (handleToggleTask) {
+      handleToggleTask(task.id);
+    }
   };
   return (
     <>
       <li className="list-group-item d-flex justify-content-between align-items-center">
         <div className="form-check">
-          <input className="form-check-input me-2" type="checkbox" />
-          <span className="task-name">Quét nhà</span>
+          <input
+            onChange={handleChangeStatus}
+            className="form-check-input me-2"
+            type="checkbox"
+            checked={task.isCompleted}
+          />
+          {task.isCompleted ? (
+            <s className="task-name">{task.name}</s>
+          ) : (
+            <span className="task-name">{task.name}</span>
+          )}
         </div>
         <div>
           <i className="fas fa-edit text-primary me-3" role="button" />
           <i
-            onClick={() => handleDelete(1)}
+            onClick={() => handleDelete(task.id)}
             className="fas fa-trash text-danger"
             role="button"
           />
